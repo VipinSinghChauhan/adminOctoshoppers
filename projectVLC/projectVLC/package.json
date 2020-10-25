@@ -1,0 +1,15 @@
+{
+  "name": "project-vlc",
+  "version": "0.0.0",
+  "description": "It is a Bosch Project",
+  "main": "app.js",
+  "author": {
+    "name": "TEAM OCTOSHOPPERS"
+  },
+  "dependencies": {
+    "mssql": "^5.1.0"
+  },
+  "scripts": {     
+    "start": "node app.js"
+  }
+}

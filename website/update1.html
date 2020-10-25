@@ -1,0 +1,291 @@
+<html>
+<head>
+<style>
+
+
+* {box-sizing: border-box}
+
+/* Full-width input fields */
+  input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+  border:2px double black;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+
+/* Set a style for all buttons */
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: hand;
+  width: 100%;
+  opacity: 0.9;
+}
+
+button:hover {
+  opacity:1;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+  padding: 14px 20px;
+  background-color: #f44336;
+}
+
+/* Float cancel and signup buttons and add an equal width */
+.cancelbtn, .signupbtn {
+  float: left;
+  width: 50%;
+}
+
+/* Add padding to container elements */
+
+<!-- .container { -->
+  <!-- padding: 20px; -->
+  <!-- width:200px; -->
+  <!-- background-color:rgba(186,170,255,0.5); -->
+  <!-- border-radius:20px; -->
+  <!-- border:2px solid #dd00ff; -->
+<!-- } -->
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 300px) {
+  .cancelbtn, .signupbtn {
+    width: 100px;
+  }
+}
+
+#bt{
+margin-left:150px;;
+margin-top:0px;
+margin-bottom:10px;
+width:80px;
+background-color:black;
+color:white;
+height:30px;
+opacity:1;
+border-radius:2px;
+}
+.tables{
+
+margin-top:200px;
+margin-left:500;
+border:5px solid white;
+width:400px;
+background-color:black;
+opacity:0.8;
+}
+
+
+.c1
+{
+font-size:20px;
+padding-left:10px;
+color:white;
+font-weight:bold;
+}
+
+.c2{
+width:250px;
+height:20px;
+margin-top:5px;
+border:2px solid white;
+background-color:white;
+color:black;
+}
+
+
+
+
+
+</style>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel = "stylesheet">
+
+
+<script>
+
+var sessionAdmin = sessionStorage.getItem("sessionAdminPortal");
+var sessionAdd = sessionStorage.getItem("add1");
+var sessionUpdate = sessionStorage.getItem("update1");
+console.log(sessionAdd+" "+sessionAdmin);
+if(sessionAdmin!="Admin" || sessionUpdate!="updateProduct")
+window.location.href = "login.html";
+
+var name = sessionStorage.getItem("pName");
+name = name.toLowerCase();
+var url  = "https://projectvlc.azurewebsites.net/getProduct";
+var xhr  = new XMLHttpRequest()
+xhr.open('GET', url+'/'+name, true);
+xhr.onload = function () {
+	var users = JSON.parse(xhr.responseText);
+	if (xhr.readyState == 4 && xhr.status == "200") {
+		console.table(users);
+	} else {
+		console.error(users);
+	}
+	console.log(users);
+	var v = users["recordsets"][0][0];
+	document.getElementById("pID").value = v.pID;
+	document.getElementById("pName").value = v.pName;
+	document.getElementById("pOffers").value = v.pOffers;
+	document.getElementById("aisle").value = v.aisle;
+	
+	
+	document.getElementById("pName").disabled = true;
+}
+xhr.send(null);
+	
+
+function updateProduct()
+
+{
+
+// Update a user
+var url = "https://projectvlc.azurewebsites.net/updateProduct";
+try{
+var data = {};
+data.pID = document.getElementById("pID").value;
+data.pOffers = document.getElementById("pOffers").value;
+data.aisle = document.getElementById("aisle").value.toString();
+data.pName = document.getElementById("pName").value;
+
+
+
+console.log("data: "+data);
+var json = JSON.stringify(data);
+
+var xhr = new XMLHttpRequest();
+xhr.open("PUT", url, false);
+xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+xhr.onload = function () {
+	var users = JSON.parse(xhr.responseText);
+	if (xhr.readyState == 4 && xhr.status == "200") {
+		console.table(users);
+	} else {
+		console.error(users);
+	}
+}
+xhr.send(json);
+
+
+}
+catch(e){
+console.log(e.message);
+alert(e.message);
+}
+}
+
+</script>
+
+
+</head>
+<body style="background-image:url('images/cubes-1920x1080.png')">
+
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">OCTOSHOPPERS</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="login.html" onclick="logout()"><span class="glyphicon glyphicon-log-in" ></span> LOGOUT</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<!-- <form onsubmit="updateProduct()" id="forms"> -->
+<!-- <div id="table" style="margin:20px;border:2px solid black;width:400px;"> -->
+<!-- <table> -->
+<!-- <tr> -->
+<!-- <td style="font-size:20px;padding-left:10px">ID:&nbsp</td> -->
+<!-- <td><input type="text" style="height:20px;margin-top:5px" name="ID" id="pID" placeholder="Enter Product Id"></input></td> -->
+<!-- </tr> -->
+<!-- <tr> -->
+<!-- <td style="font-size:20px;padding-left:10px">Name:&nbsp</td> -->
+<!-- <td><input type="text" style="height:20px;margin-top:5px;" name="pName" id="pName" placeholder="Enter Product Name"></input></td> -->
+<!-- </tr> -->
+<!-- <tr> -->
+<!-- <td style="font-size:20px;padding-left:10px">Aisle:&nbsp</td> -->
+<!-- <td><input type="text" style="height:20px;margin-top:5px;" name="aisle" id="aisle" placeholder="Enter Product Aisle Number"></input></td> -->
+<!-- </tr> -->
+<!-- <tr> -->
+<!-- <td style="font-size:20px;padding-left:10px">Offers:&nbsp</td> -->
+<!-- <td><input type="text" style="height:20px;margin-top:5px;" name="pOffers" id="pOffers" placeholder="Enter Offers on Product"></input></td> -->
+<!-- </tr> -->
+<!-- <tr> -->
+<!-- <td><input type="submit" style="margin:10px;"></input></td> -->
+<!-- </tr> -->
+<!-- </table> -->
+<!-- </div> -->
+<!-- </form> -->
+
+
+<form onsubmit="updateProduct()" id="forms">
+<div class="tables">
+<div style="margin-left:100px;font-weight:bold;color:white;font-size:25px">
+UPDATE A PRODUCT
+</div>
+<table>
+<tr>
+<td class="c1">ID:&nbsp</td>
+<td><input type="text" class="c2"  name="pID" id="pID" placeholder="Enter Product Id"></input></td>
+</tr>
+<tr>
+<td class="c1" >Name:&nbsp</td>
+<td><input type="text" class="c2"  name="pName" id="pName" placeholder="Enter Product Name"></input></td>
+</tr>
+<tr>
+<td class="c1">Aisle:&nbsp</td>
+<td><input type="text" class="c2"  name="aisle" id="aisle" placeholder="Enter Product Aisle Number"></input></td>
+</tr>
+<tr>
+<td class="c1">Offers:&nbsp</td>
+<td><input type="text" class="c2" name="pOffers" id="pOffers" placeholder="Enter Offers on Product"></input></td>
+</tr>
+
+</table>
+<input id ="bt" type="submit" value="UPDATE" ></input></td>
+</div>
+</form>
+
+
+<script>
+function logout()
+{
+var sessionAdmin = sessionStorage.getItem("sessionAdminPortal");
+console.log(sessionAdmin);
+var sessionAdd = sessionStorage.getItem("add1");
+var sessionUpdate = sessionStorage.getItem("update1");
+
+sessionStorage.removeItem(sessionAdd);
+sessionStorage.removeItem(sessionUpdate);
+sessionStorage.removeItem(sessionAdmin);
+
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,3 @@
+C:\Users\Vikas Tiwari\source\repos\projectVLC\projectVLC\obj\Debug\projectVLC.njsproj.CoreCompileInputs.cache
+C:\Users\Vikas Tiwari\source\repos\projectVLC\projectVLC\bin\Microsoft.NodejsTools.WebRole.dll
+C:\Users\Vikas Tiwari\source\repos\projectVLC\projectVLC\obj\Debug\projectVLC.njsprojAssemblyReference.cache

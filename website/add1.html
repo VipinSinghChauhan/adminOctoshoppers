@@ -1,0 +1,195 @@
+<html>
+<head>
+<style>
+
+
+* {box-sizing: border-box}
+
+/* Full-width input fields */
+  input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+  border:2px double black;
+}
+
+
+
+
+
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 300px) {
+  .cancelbtn, .signupbtn {
+    width: 100px;
+  }
+}
+
+#bt{
+margin-left:150px;;
+margin-top:0px;
+margin-bottom:10px;
+width:80px;
+background-color:black;
+color:white;
+height:30px;
+opacity:1;
+border-radius:2px;
+}
+.tables{
+
+margin-top:200px;
+margin-left:500;
+border:5px solid white;
+width:400px;
+background-color:black;
+opacity:0.8;
+}
+
+
+.c1
+{
+font-size:20px;
+padding-left:10px;
+color:white;
+font-weight:bold;
+}
+
+.c2{
+width:250px;
+height:20px;
+margin-top:5px;
+border:2px solid white;
+background-color:white;
+color:black;
+}
+
+
+
+</style>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel = "stylesheet">
+<script>
+var sessionAdmin = sessionStorage.getItem("sessionAdminPortal");
+var sessionAdd = sessionStorage.getItem("add1");
+var sessionUpdate = sessionStorage.getItem("update1");
+if(sessionAdmin!="Admin" || sessionAdd!="addProduct")
+window.location.href = "login.html";
+
+
+
+</script>
+
+</head>
+<body style="background-image:url('images/cubes-1920x1080.png')">
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">OCTOSHOPPERS</a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="login.html" onclick="logout()"><span class="glyphicon glyphicon-log-in" ></span> LOGOUT</a></li>
+    </ul>
+  </div>
+</nav>
+
+<form onsubmit="addProduct()" id="forms">
+<div class="tables">
+<div style="margin-left:100px;font-weight:bold;color:white;font-size:25px">
+ADD A PRODUCT
+</div>
+<table>
+<tr>
+<td class="c1">ID:&nbsp</td>
+<td><input type="text" class="c2"  name="ID" id="ID" placeholder="Enter Product Id"></input></td>
+</tr>
+<tr>
+<td class="c1" >Name:&nbsp</td>
+<td><input type="text" class="c2"  name="pName" id="pName" placeholder="Enter Product Name"></input></td>
+</tr>
+<tr>
+<td class="c1">Aisle:&nbsp</td>
+<td><input type="text" class="c2"  name="aisle" id="aisle" placeholder="Enter Product Aisle Number"></input></td>
+</tr>
+<tr>
+<td class="c1">Offers:&nbsp</td>
+<td><input type="text" class="c2" name="pOffers" id="pOffers" placeholder="Enter Offers on Product"></input></td>
+</tr>
+
+</table>
+<input id ="bt" type="submit" value="ADD" ></input></td>
+</div>
+</form>
+
+
+
+
+
+<script>
+
+function addProduct()
+
+{
+try{
+	var pID = document.getElementById("ID").value;
+
+	var pName = document.getElementById("pName").value;
+	var pOffers = document.getElementById("pOffers").value;
+	var aisle = document.getElementById("aisle").value;
+	<!-- aisle = aisle.toString(10); -->
+	
+	alert(pID+" "+pName+" "+pOffers+" "+aisle);
+	
+
+	var data = {};
+data.pID = pID;
+data.pName = pName.toString().toLowerCase();
+data.pOffers = pOffers.toLowerCase();
+data.aisle = aisle.toString().toLowerCase();
+}
+catch(e)
+{
+	alert(e.message);
+}
+url = "https://projectvlc.azurewebsites.net/addProduct";
+var json = JSON.stringify(data);
+var xhr = new XMLHttpRequest();
+xhr.open("POST", url, false);
+xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+xhr.onload = function () {
+alert("Inside add Onload");
+	var users = JSON.parse(xhr.responseText);
+	if (xhr.readyState == 4 && xhr.status == "200") {
+		xhr.status = "200";
+		console.log(users);
+	} else {
+		console.log(users);
+	}
+}
+console.log(data);
+xhr.send(json);
+}
+
+function logout()
+{
+var sessionAdmin = sessionStorage.getItem("sessionAdminPortal");
+console.log(sessionAdmin);
+var sessionAdd = sessionStorage.getItem("add1");
+var sessionUpdate = sessionStorage.getItem("update1");
+
+sessionStorage.removeItem(sessionAdd);
+sessionStorage.removeItem(sessionUpdate);
+sessionStorage.removeItem(sessionAdmin);
+
+}
+
+
+</script>
+
+
+</body>
+</html>
